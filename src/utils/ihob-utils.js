@@ -53,23 +53,31 @@ const getSubstringTo = (text, letter) => {
     }
 }
 
-const formatTweetText = (text, screen_name) => {
-    const splitText = removePrefixMentions(text);
-    const prefix = `@${screen_name} ${splitText.prefix}`.trim();
-    text = splitText.text;
+const formatPrefix = (tweet, prefix, {prefixMentions, reply} = {}) => {
+    const {screen_name} = tweet.user;
+    const replyTag = `@${screen_name}`;
+    return `${reply ? replyTag : ""} ${prefixMentions ? prefix : ""}`.trim();
+}
+
+const formatTweetText = (tweet, {prefixMentions, reply} = {}) => {
+    console.log(`formatting tweet:\n${tweet}`);
+    const splitText = removePrefixMentions(TwitterUtils.getText(tweet));
+    const prefix = formatPrefix(tweet, splitText.prefix, {prefixMentions, reply});
+    const text = splitText.text;
     const i = getSubstringTo(text, "h");
     const h = getSubstringTo(i.rest, "o");
     const o = getSubstringTo(h.rest, "b");
-    return (`${prefix}
-${prefixes.i}${i.text.trim()}
+    const body = (
+`${prefixes.i}${i.text.trim()}
 ${prefixes.h}${h.text.trim()}
 ${prefixes.o}${o.text.trim()}
 ${prefixes.b}${o.rest.trim()}`
     );
+    return (prefix === "") ? body : `${prefix}\n${body}`;
 };
 
-const getRetweetText = (tweet) => {
-    const formattedText = formatTweetText(TwitterUtils.getText(tweet), tweet.user.screen_name);
+const getRetweetText = (tweet, {prefixMentions, reply} = {}) => {
+    const formattedText = formatTweetText(tweet, {prefixMentions, reply});
     // quote retweet formatting belongs in twitter-utils, but trivial for now
     return `${formattedText} ${TwitterUtils.getTweetUrl(tweet)}`;
 };

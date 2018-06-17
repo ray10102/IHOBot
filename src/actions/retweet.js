@@ -8,10 +8,11 @@ getRetweetHandler = (bot) => {
     }
 }
 
+// Attempts to format and quote retweet a single tweet
 const retweet = (tweet, bot) => {
     if (IHOBUtils.shouldRetweet(tweet) && !TwitterUtils.isReply(tweet)) {
-        const text = IHOBUtils.format(tweet);
-        quoteRetweet([text], bot);
+        const text = IHOBUtils.format(tweet, {prefixMentions: true, reply: true});
+        quoteRetweet([{rt: text, source: tweet}], bot);
     }
 }
 

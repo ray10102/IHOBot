@@ -15,7 +15,7 @@ const findAndRetweet = (bot, {since_id, seed, errorCount} = {}) => {
 
     seed = seed || Math.random();
     const query = TwitterUtils.getQuery(seed);
-    console.log(`searching since id ${since_id}`);
+    console.log(`searching since id ${since_id || 1}`);
     bot.get(
         'search/tweets',
         {
@@ -26,6 +26,10 @@ const findAndRetweet = (bot, {since_id, seed, errorCount} = {}) => {
             since_id: since_id || 1
         },
         (err, data, response) => {
+            if (data.statuses === undefined) {
+                console.log(data); // you've probably excceeded your rate limit
+                return;
+            }
             if (data.statuses.length === 0 || since_id === data.statuses[0].id) {
                 findAndRetweet(bot); // you're done, get a new search
                 return;
@@ -41,7 +45,7 @@ const findAndRetweet = (bot, {since_id, seed, errorCount} = {}) => {
                     console.log(data.statuses[i].id);
                     if (IHOBUtils.shouldRetweet(data.statuses[i])) {
                         formattedTweets.push({
-                            rt: IHOBUtils.format(data.statuses[i]),
+                            rt: IHOBUtils.format(data.statuses[i], {prefixMentions: true, reply: true}),
                             source: data.statuses[i]
                         });
                     }
@@ -56,7 +60,9 @@ const findAndRetweet = (bot, {since_id, seed, errorCount} = {}) => {
                 };
 
                 if (formattedTweets.length > 0) {
-                    quoteRetweet(formattedTweets, bot, requery);
+                    quoteRetweet(formattedTweets, bot, {
+                        onFail: requery
+                    });
                 } else {
                     requery();
                 }
