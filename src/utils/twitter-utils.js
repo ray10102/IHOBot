@@ -1,4 +1,4 @@
-// a generic query builder for Twitter queries (not all operators supported)
+// a generic query builder for Twitter queries (not all twitter api operators supported)
 class QueryBuilder {
     constructor(topic) {
         this.params = [];

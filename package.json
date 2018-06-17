@@ -1,7 +1,7 @@
 {
   "name": "ihobot",
   "version": "1.0.0",
-  "description": "\"A twitter bot for IHOB meme shitposting\"",
+  "description": "A twitter bot for IHOB meme shitposting",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -27,7 +27,6 @@
     "console.lol": "0.1.2"
   },
   "devDependencies": {
-    "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-import": "^2.12.0"
   }
