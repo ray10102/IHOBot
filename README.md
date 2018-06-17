@@ -1,4 +1,7 @@
 # IHOBot
-Helloooo!!! This is a twitter bot that searches for tweets that can be formatted as IHOB acronyms and retweets them. In the near future, I will do this in real time and with more popular/relevant content!
+Helloooo!!! This is a twitter bot that searches for tweets that can be formatted as IHOB acronyms and retweets them.
 
 Made by Raymond Huang.
+
+# Contributions
+Wanna contribute?? DM me on Twitter @ray10102 because honestly, I'm too lazy to write anything meaningful here right now.
