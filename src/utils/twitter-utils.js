@@ -1,3 +1,5 @@
+const config = require('../config');
+
 // a generic query builder for Twitter queries (not all twitter api operators supported)
 class QueryBuilder {
     constructor(topic) {
@@ -90,9 +92,12 @@ class QueryBuilder {
     };
 }
 
-const getQuery = () => {
-    var getTweets = new QueryBuilder("I");
-    return getTweets.from("Lin_Manuel").build();
+const getQuery = (seed) => {
+    var getTweets = new QueryBuilder();
+    const {following} = config.twitterConfig;
+    const from = following[Math.floor(seed * following.length)];
+    console.log(`tweets from: ${from}`);
+    return getTweets.from(from).build();
 };
 
 const getTweetUrl = (tweet) => {
@@ -103,10 +108,26 @@ const getText = (tweet) => {
     return tweet.full_text === undefined ? tweet.text : tweet.full_text;
 }
 
+const isReply = tweet => {
+    const RT = /^RT/i
+
+    return (
+        RT.test(tweet.text) ||
+        tweet.is_quote_status ||
+        tweet.retweeted_status ||
+        tweet.in_reply_to_status_id ||
+        tweet.in_reply_to_status_id_str ||
+        tweet.in_reply_to_user_id ||
+        tweet.in_reply_to_user_id_str ||
+        tweet.in_reply_to_screen_name
+    );
+}
+
 const TwitterUtils = {
     getQuery: getQuery,
     getTweetUrl: getTweetUrl,
-    getText: getText
+    getText: getText,
+    isReply: isReply
 };
 
 module.exports = TwitterUtils;

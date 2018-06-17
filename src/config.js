@@ -1,9 +1,9 @@
 module.exports = {
     twitterKeys: {
-        consumer_key: 'Bz0X0TqUGmPr1qruYdK0KZW4k',
-        consumer_secret: 'oyV3m8cWe90qwXRyXvbqYeC91l5OiLqOlAPKdm73aFUc2nqb5J',
-        access_token: '1008060645072240640-MpnzvLRw73Zrtpr2lhXb7d3DyAnXzP',
-        access_token_secret: 'EJ0vhHE3nzjus5HqSYUsHlJpursNmMWNl4aFszrq28wbY'
+        consumer_key: 'Yhdg7A7h6NS5IIM6a4BjNicDr',
+        consumer_secret: 'nYq04wkFwYnqruxwb8xM9yASCtvljvRJxZ7bcRr2Bzvw4hGey0',
+        access_token: '1008428251427975171-9kYRULbtaJfc1jrEyfjylAuv5YM16R',
+        access_token_secret: 'wRlETR6sXpruBbB3MR5848w8Nu5CTXajCqXJiVy0y41pv'
     },
     twitterConfig: {
         lang: "en",
@@ -12,6 +12,6 @@ module.exports = {
             "jimmyfallon", "Oprah", "nytimes", "BBCBreaking", "NASA", "kanyewest", "KendallJenner",
             "khloekardashian", "KylieJenner", "kourtneykardash", "HillaryClinton", "elonmusk", "Lin_Manuel",
             "jonnysun", "dril", "chrissyteigen", "johnlegend", "Beyonce", "DennysDiner", "MoonPie"],
-        tracking: ["IHOB", "burgers"]
+        tracking: ["IHOB", "burgers", "broadway", "Hamilton musical", "In the Heights"]
     }
 };

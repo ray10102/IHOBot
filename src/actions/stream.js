@@ -1,4 +1,5 @@
-const retweet = require('./actions/retweet');
+const getRetweetHandler = require('./retweet');
+const config = require('../config');
 
 const startStream = (bot) => {
     const following = [];
@@ -18,7 +19,7 @@ const startStream = (bot) => {
                     track: config.twitterConfig.tracking
                 });
 
-                tweetStream.on('tweet', retweet);
+                tweetStream.on('tweet', getRetweetHandler(bot));
             }
         }
     );

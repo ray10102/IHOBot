@@ -12,12 +12,12 @@ const linkLength = 20;
 const maxAcceptedLength = 280 - (prefixes.i.length + prefixes.o.length + prefixes.o.length + prefixes.b.length + linkLength) + 3; // +3 for incidental removal of trailing spaces
 
 const removePrefixMentions = (text) => {
-    let prefix = null;
+    let prefix = "";
     let regex = /(?:@\w* )+/g;
     const result = regex.exec(text);
     if (result !== null && result.index === 0) { // a zero indexed match!
         text = text.substring(regex.lastIndex);
-        prefix = result[0];
+        prefix = result[0].trim(); // add leading space, remove trailing space
     }
     return {
         text: text,
@@ -28,8 +28,15 @@ const removePrefixMentions = (text) => {
 const matchesIHOB = (text) => {
     const regex = /(?:@\w* )* ?#?i.* {1,2}#?h.* {1,2}#?o.* {1,2}#?b.*/i
     const result = regex.exec(text);
-    return result !== null && result.index === 0;
+    return result !== null && result.index === 0 && !isBlacklistedPattern(text) ;
 };
+
+const isBlacklistedPattern = (text) => { // TODO: refactor this to take a list of blacklisted patterns from config.js
+    const IHORegex = /(?:@\w* )* ?#?(?:ihob)|(?:international).* {1,2}#?house.* {1,2}#?of.* {1,2}#?b.*/i;
+    const badResult = IHORegex.exec(text);
+    const isYoutubeLike = text.indexOf("I liked a @YouTube video") >= 0;
+    return badResult !== null && isYoutubeLike;
+}
 
 const shouldRetweet = (tweet) => {
     let text = TwitterUtils.getText(tweet);
@@ -38,7 +45,7 @@ const shouldRetweet = (tweet) => {
 
 // helper for formatTweetText
 const getSubstringTo = (text, letter) => {
-    let regex = new RegExp(` {1,2}#?${letter}`);
+    let regex = new RegExp(` {1,2}#?${letter}`, "gi");
     const result = regex.exec(text);
     return {
         text: text.substring(0, result.index),
@@ -46,24 +53,23 @@ const getSubstringTo = (text, letter) => {
     }
 }
 
-const formatTweetText = (text) => {
+const formatTweetText = (text, screen_name) => {
     const splitText = removePrefixMentions(text);
-    const prefix = splitText.prefix;
+    const prefix = `@${screen_name} ${splitText.prefix}`.trim();
     text = splitText.text;
     const i = getSubstringTo(text, "h");
     const h = getSubstringTo(i.rest, "o");
     const o = getSubstringTo(h.rest, "b");
-    const ihob = (
-`${prefixes.i}${i.text}
-${prefixes.h}${h.text}
-${prefixes.o}${o.text}
-${prefixes.b}${o.rest}`
+    return (`${prefix}
+${prefixes.i}${i.text.trim()}
+${prefixes.h}${h.text.trim()}
+${prefixes.o}${o.text.trim()}
+${prefixes.b}${o.rest.trim()}`
     );
-    return !prefix ? ihob : `${prefix}\n${ihob}`;
 };
 
 const getRetweetText = (tweet) => {
-    const formattedText = formatTweetText(TwitterUtils.getText(tweet));
+    const formattedText = formatTweetText(TwitterUtils.getText(tweet), tweet.user.screen_name);
     // quote retweet formatting belongs in twitter-utils, but trivial for now
     return `${formattedText} ${TwitterUtils.getTweetUrl(tweet)}`;
 };
