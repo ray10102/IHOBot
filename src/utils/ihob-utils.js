@@ -1,3 +1,5 @@
+const TwitterUtils = require('./twitter-utils');
+
 const prefixes = {
     i: "I: ",
     h: "H: ",
@@ -25,12 +27,12 @@ const removePrefixMentions = (text) => {
 
 const matchesIHOB = (text) => {
     const regex = /(?:@\w* )* ?#?i.* {1,2}#?h.* {1,2}#?o.* {1,2}#?b.*/i
-    const matches = text.match(regex);
-    return matches !== null;
+    const result = regex.exec(text);
+    return result !== null && result.index === 0;
 };
 
 const shouldRetweet = (tweet) => {
-    const text = tweet.full_text;
+    let text = TwitterUtils.getText(tweet);
     return text.length <= maxAcceptedLength && matchesIHOB(text);
 };
 
@@ -61,9 +63,9 @@ ${prefixes.b}${o.rest}`
 };
 
 const getRetweetText = (tweet) => {
-    const formattedText = formatTweetText(tweet.full_text);
+    const formattedText = formatTweetText(TwitterUtils.getText(tweet));
     // quote retweet formatting belongs in twitter-utils, but trivial for now
-    return `${formattedText} http://twitter.com/${tweet.user.id_str}/status/${tweet.id_str}`;
+    return `${formattedText} ${TwitterUtils.getTweetUrl(tweet)}`;
 };
 
 const IHOBUtils = {

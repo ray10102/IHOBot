@@ -95,8 +95,18 @@ const getQuery = () => {
     return getTweets.from("Lin_Manuel").build();
 };
 
+const getTweetUrl = (tweet) => {
+    return `http://twitter.com/${tweet.user.id_str}/status/${tweet.id_str}`;
+}
+
+const getText = (tweet) => {
+    return tweet.full_text === undefined ? tweet.text : tweet.full_text;
+}
+
 const TwitterUtils = {
-    getQuery: getQuery
+    getQuery: getQuery,
+    getTweetUrl: getTweetUrl,
+    getText: getText
 };
 
 module.exports = TwitterUtils;

@@ -1,5 +1,6 @@
 require('console.lol');
 
+// tweets : an array of strings representing the text of the tweets to be tweeted
 const quoteRetweet = (tweets, bot) => {
     if (tweets.length > 0) {
         bot.post('statuses/update',

@@ -7,6 +7,11 @@ module.exports = {
     },
     twitterConfig: {
         lang: "en",
-        tweetMode: "extended"
+        tweetMode: "extended",
+        following: ["BarackObama", "rihanna", "ladygaga", "TheEllenShow", "KimKardashian", "realDonaldTrump",
+            "jimmyfallon", "Oprah", "nytimes", "BBCBreaking", "NASA", "kanyewest", "KendallJenner",
+            "khloekardashian", "KylieJenner", "kourtneykardash", "HillaryClinton", "elonmusk", "Lin_Manuel",
+            "jonnysun", "dril", "chrissyteigen", "johnlegend", "Beyonce", "DennysDiner", "MoonPie"],
+        tracking: ["IHOB", "burgers"]
     }
 };
