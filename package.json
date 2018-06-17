@@ -1,0 +1,34 @@
+{
+  "name": "ihobot",
+  "version": "1.0.0",
+  "description": "\"A twitter bot for IHOB meme shitposting\"",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "lint": "eslint",
+    "bulldoze": "rm -rf node_modules; yarn install"
+  },
+  "repository": "git+https://github.com/ray10102/IHOBot.git",
+  "keywords": [
+    "twitter",
+    "twitter-bot",
+    "bot",
+    "node.js"
+  ],
+  "author": "Raymond Huang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ray10102/IHOBot/issues"
+  },
+  "homepage": "https://github.com/ray10102/IHOBot#readme",
+  "dependencies": {
+    "eslint": "^4.19.1",
+    "twit": "^2.2.10",
+    "console.lol": "0.1.2"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-import": "^2.12.0"
+  }
+}
