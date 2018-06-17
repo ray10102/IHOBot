@@ -7,33 +7,26 @@ const prefixes = {
 
 // links in tweets are reformatted as t.co links, which have a max potential length of 20 characters that count toward character count.
 const linkLength = 20;
-const maxAcceptedLength = 280 - (prefixes.i.length + prefixes.o.length + prefixes.o.length + prefixes.b.length + linkLength);
+const maxAcceptedLength = 280 - (prefixes.i.length + prefixes.o.length + prefixes.o.length + prefixes.b.length + linkLength) + 3; // +3 for incidental removal of trailing spaces
 
 const removePrefixMentions = (text) => {
-    let prefix = "";
-    while (text.charAt(0) === "@") {
-        const i = text.indexOf(" ") + 1;
-        prefix = `${prefix}${text.substring(0, i)}`;
-        text = text.substring(i);
+    let prefix = null;
+    let regex = /(?:@\w* )+/g;
+    const result = regex.exec(text);
+    if (result !== null && result.index === 0) { // a zero indexed match!
+        text = text.substring(regex.lastIndex);
+        prefix = result[0];
     }
-
     return {
         text: text,
         prefix: prefix
-    };
+    }
 };
 
 const matchesIHOB = (text) => {
-    const i = text.charAt(0).toLowerCase();
-    if (i === "i" || i === "@") {
-        if (i === "@") {
-            text = removePrefixMentions(text).text;
-        }
-        const regex = /i.* h.* o.* b.*/i
-        const matches = text.match(regex);
-        return matches && matches[0] === text;
-    }
-    return false;
+    const regex = /(?:@\w* )* ?#?i.* {1,2}#?h.* {1,2}#?o.* {1,2}#?b.*/i
+    const matches = text.match(regex);
+    return matches !== null;
 };
 
 const shouldRetweet = (tweet) => {
@@ -43,21 +36,18 @@ const shouldRetweet = (tweet) => {
 
 // helper for formatTweetText
 const getSubstringTo = (text, letter) => {
-    let index = text.indexOf(` ${letter}`);
-    index = (index < 0) ? text.indexOf(` ${letter.toUpperCase()}`) : index;
+    let regex = new RegExp(` {1,2}#?${letter}`);
+    const result = regex.exec(text);
     return {
-        text: text.substring(0, index),
-        rest: text.substring(index)
+        text: text.substring(0, result.index),
+        rest: text.substring(regex.lastIndex - ((result[0].indexOf("#") < 0) ? 1 : 2))
     }
 }
 
 const formatTweetText = (text) => {
-    let prefix = null;
-    if (text.charAt(0) === "@") {
-        const splitText = removePrefixMentions(text);
-        prefix = splitText.prefix;
-        text = splitText.text;
-    }
+    const splitText = removePrefixMentions(text);
+    const prefix = splitText.prefix;
+    text = splitText.text;
     const i = getSubstringTo(text, "h");
     const h = getSubstringTo(i.rest, "o");
     const o = getSubstringTo(h.rest, "b");
