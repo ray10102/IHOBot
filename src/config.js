@@ -1,9 +1,9 @@
 module.exports = {
     twitterKeys: {
-        consumer_key: 'Yhdg7A7h6NS5IIM6a4BjNicDr',
-        consumer_secret: 'nYq04wkFwYnqruxwb8xM9yASCtvljvRJxZ7bcRr2Bzvw4hGey0',
-        access_token: '1008428251427975171-9kYRULbtaJfc1jrEyfjylAuv5YM16R',
-        access_token_secret: 'wRlETR6sXpruBbB3MR5848w8Nu5CTXajCqXJiVy0y41pv'
+        consumer_key: 'bq2P5rkS9xGzHcApDzVOUwsjX',
+        consumer_secret: 'aJkRF7TdegqfWcWpP8XdOPl34ataUMkA4Dh69vPrJAAzlsMFcx',
+        access_token: '1008481952792391680-5xVkC8XoNThx4Q6wYFVAvxoOd3NgXo',
+        access_token_secret: 'MrgO17oWxn0C9UJWPoj8sng6dk5STEMYOmYrYYQ5ErfL1'
     },
     twitterConfig: {
         lang: "en",

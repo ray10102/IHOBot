@@ -33,7 +33,7 @@ const quoteRetweet = (tweets, bot, {onFail} = {}) => {
                     tweets.length = tweets.length - 1;
                     quoteRetweet(tweets, bot, {onFail});
                 } else {
-                    handleReplySuccess(data.id, bot);
+                    handleReplySuccess(data.id_str, bot);
                     return;
                 }
             }
@@ -51,7 +51,7 @@ const reformatAndRT = (tweet, bot) => {
         {
             onSuccess: (data) => {
                 console.rofl("Successful RT without prefix mentions!");
-                handleReplySuccess(data.id, bot);
+                handleReplySuccess(data.id_str, bot);
             },
             onFail: () => {
                 reformatAndRTHelper(tweet, bot,
