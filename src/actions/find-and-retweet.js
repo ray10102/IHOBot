@@ -7,14 +7,14 @@ const IHOBUtils = require('../utils/ihob-utils');
 
 const quoteRetweet = require('./quote-retweet');
 
-const findAndRetweet = (bot, {since_id, seed, errorCount} = {}) => {
+const findAndRetweet = (bot, {trends, since_id, seed, errorCount} = {}) => {
     if (errorCount === 10) {
         console.rofl("errored 10 times, aborting");
         return;
     }
 
     seed = seed || Math.random();
-    const query = TwitterUtils.getQuery(seed, bot);
+    const query = TwitterUtils.getQuery(seed, trends, bot);
     console.log(`searching since id ${since_id || 1}`);
     bot.get(
         'search/tweets',
@@ -31,13 +31,13 @@ const findAndRetweet = (bot, {since_id, seed, errorCount} = {}) => {
                 return;
             }
             if (data.statuses.length === 0 || since_id === data.statuses[0].id) {
-                findAndRetweet(bot); // you're done, get a new search
+                findAndRetweet(bot, {trends}); // you're done, get a new search
                 return;
             }
             
             if (err) {
                 console.lol(`shit, ${err}`);
-                findAndRetweet(bot, {errorCount: (errorCount === undefined ? 0 : errorCount + 1)}); // try again? 
+                findAndRetweet(bot, {trends, errorCount: (errorCount === undefined ? 0 : errorCount + 1)}); // try again? 
             } else {
                 console.lol(`Yay!! Got ${data.statuses.length} tweets!`)
                 const formattedTweets = [];
@@ -54,7 +54,8 @@ const findAndRetweet = (bot, {since_id, seed, errorCount} = {}) => {
                     console.lol("searching again");
                     findAndRetweet(bot, {
                         since_id: data.statuses[0].id,
-                        seed: seed
+                        seed,
+                        trends
                     });
                 };
 

@@ -94,18 +94,19 @@ class QueryBuilder {
     };
 }
 
-const getQuery = (seed, bot) => {
+const getQuery = (seed, trends, bot) => {
     console.log(seed);
     var getTweets = new QueryBuilder();
-    /*if (Math.floor(seed * 100) % 2) {
+    if (Math.floor(seed * 100) % 2) {
         const { following } = config.twitterConfig;
         const from = following[Math.floor(seed * following.length)];
         getTweets.from(from);
         console.log(`tweets from: ${from}`);
-    } else {*/
-        
-        getTweets.about("fathers day");
-    //}
+    } else {
+        const abt = trends[Math.floor(seed * trends.length)].name;
+        getTweets.about(abt);
+        console.log(`tweets about: ${abt}`);
+    }
     return getTweets.build();
 };
 

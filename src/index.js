@@ -9,5 +9,20 @@ const startStream = require('./actions/stream');
 
 console.rofl('Bot starting...');
 
-findAndRetweet(bot);
-startStream(bot);
+const {WOEIDs} = config.twitterConfig.trendData;
+
+const run = () => {
+    bot.get("trends/place", {id: WOEIDs[Math.floor(Math.random() * WOEIDs.length)]},
+        (err, data) => {
+            const {trends} = data[0];
+            findAndRetweet(bot, {trends});
+            startStream(bot, {trends});
+        }
+    );
+}
+
+run();
+setInterval(() => {
+    run();
+}, 1000 * 60 * 60 * 3);
+

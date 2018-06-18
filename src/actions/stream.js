@@ -1,7 +1,7 @@
 const getRetweetHandler = require('./retweet');
 const config = require('../config');
 
-const startStream = (bot) => {
+const startStream = (bot, {trends}) => {
     const following = [];
     let tweetStream;
     bot.get("users/lookup", // get user id's based on the list of twitter handles in config.js
@@ -14,9 +14,14 @@ const startStream = (bot) => {
                     following.push(`${user.id_str}`);
                 });
 
+                const tracking = [
+                    ...config.twitterConfig.tracking,
+                    ...trends
+                ];
+
                 tweetStream = bot.stream('statuses/filter', {
                     follow: following,
-                    track: config.twitterConfig.tracking
+                    track: tracking
                 });
 
                 tweetStream.on('tweet', getRetweetHandler(bot));

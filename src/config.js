@@ -17,6 +17,6 @@ module.exports = {
             "jimmyfallon", "Oprah", "nytimes", "BBCBreaking", "NASA", "kanyewest", "KendallJenner",
             "khloekardashian", "KylieJenner", "kourtneykardash", "HillaryClinton", "elonmusk", "Lin_Manuel",
             "jonnysun", "dril", "chrissyteigen", "johnlegend", "Beyonce", "DennysDiner", "MoonPie", "Wendys", "tinycarebot"],
-        tracking: ["IHOB", "burgers", "broadway", "Hamilton musical", "In the Heights"]
+        tracking: ["IHOB", "burgers"]
     }
 };
