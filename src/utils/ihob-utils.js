@@ -1,4 +1,5 @@
 const TwitterUtils = require('./twitter-utils');
+const config = require('../config');
 
 const prefixes = {
     i: "I: ",
@@ -28,14 +29,19 @@ const removePrefixMentions = (text) => {
 const matchesIHOB = (text) => {
     const regex = /(?:@\w* )* ?#?i.* {1,2}#?h.* {1,2}#?o.* {1,2}#?b.*/i
     const result = regex.exec(text);
-    return result !== null && result.index === 0 && !isBlacklistedPattern(text) ;
+    return result !== null && result.index === 0 && !isBlacklistedPattern(text);
 };
 
-const isBlacklistedPattern = (text) => { // TODO: refactor this to take a list of blacklisted patterns from config.js
-    const IHORegex = /(?:@\w* )* ?#?(?:ihob)|(?:international).* {1,2}#?house.* {1,2}#?of.* {1,2}#?b.*/i;
-    const badResult = IHORegex.exec(text);
-    const isYoutubeLike = text.indexOf("I liked a @YouTube video") >= 0;
-    return badResult !== null && isYoutubeLike;
+const isBlacklistedPattern = (text) => {
+    const blacklist = config.twitterConfig.patternBlacklist;
+    for (i = 0; i < blacklist.length; i++) {
+        const regex = new RegExp(blacklist[i], "i");
+        const result = regex.exec(text);
+        if (result !== null) {
+            return true;
+        }
+    }
+    return false;
 }
 
 const shouldRetweet = (tweet) => {
@@ -60,7 +66,8 @@ const formatPrefix = (tweet, prefix, {prefixMentions, reply} = {}) => {
 }
 
 const formatTweetText = (tweet, {prefixMentions, reply} = {}) => {
-    console.log(`formatting tweet:\n${tweet}`);
+    console.log(`formatting tweet:`);
+    console.log(tweet);
     const splitText = removePrefixMentions(TwitterUtils.getText(tweet));
     const prefix = formatPrefix(tweet, splitText.prefix, {prefixMentions, reply});
     const text = splitText.text;

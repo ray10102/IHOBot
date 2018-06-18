@@ -2,11 +2,8 @@ const config = require('../config');
 
 // a generic query builder for Twitter queries (not all twitter api operators supported)
 class QueryBuilder {
-    constructor(topic) {
+    constructor() {
         this.params = [];
-        if (topic) {
-            this.params.push(topic); 
-        }
     }
 
     to(user) {
@@ -33,6 +30,11 @@ class QueryBuilder {
         this.params.push(`"${phrase}"`);
         return this;
     };
+
+    about(topic) {
+        this.params.push(topic);
+        return this;
+    }
 
     since(month, day, year) {
         this.params.push(`since:${year}-${month}-${day}`);
@@ -92,12 +94,19 @@ class QueryBuilder {
     };
 }
 
-const getQuery = (seed) => {
+const getQuery = (seed, bot) => {
+    console.log(seed);
     var getTweets = new QueryBuilder();
-    const {following} = config.twitterConfig;
-    const from = following[Math.floor(seed * following.length)];
-    console.log(`tweets from: ${from}`);
-    return getTweets.from(from).build();
+    /*if (Math.floor(seed * 100) % 2) {
+        const { following } = config.twitterConfig;
+        const from = following[Math.floor(seed * following.length)];
+        getTweets.from(from);
+        console.log(`tweets from: ${from}`);
+    } else {*/
+        
+        getTweets.about("fathers day");
+    //}
+    return getTweets.build();
 };
 
 const getTweetUrl = (tweet) => {

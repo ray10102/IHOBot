@@ -8,10 +8,15 @@ module.exports = {
     twitterConfig: {
         lang: "en",
         tweetMode: "extended",
+        patternBlacklist: ["(?:@\w* )* ?#?(?:ihob)|(?:international).* {1,2}#?house.* {1,2}#?of.* {1,2}#?b.*",
+            ".*@YouTube.*"],
+        trendData: {
+            WOEIDs: [23424977]
+        },
         following: ["BarackObama", "rihanna", "ladygaga", "TheEllenShow", "KimKardashian", "realDonaldTrump",
             "jimmyfallon", "Oprah", "nytimes", "BBCBreaking", "NASA", "kanyewest", "KendallJenner",
             "khloekardashian", "KylieJenner", "kourtneykardash", "HillaryClinton", "elonmusk", "Lin_Manuel",
-            "jonnysun", "dril", "chrissyteigen", "johnlegend", "Beyonce", "DennysDiner", "MoonPie"],
+            "jonnysun", "dril", "chrissyteigen", "johnlegend", "Beyonce", "DennysDiner", "MoonPie", "Wendys", "tinycarebot"],
         tracking: ["IHOB", "burgers", "broadway", "Hamilton musical", "In the Heights"]
     }
 };

@@ -14,7 +14,7 @@ const findAndRetweet = (bot, {since_id, seed, errorCount} = {}) => {
     }
 
     seed = seed || Math.random();
-    const query = TwitterUtils.getQuery(seed);
+    const query = TwitterUtils.getQuery(seed, bot);
     console.log(`searching since id ${since_id || 1}`);
     bot.get(
         'search/tweets',
@@ -41,15 +41,14 @@ const findAndRetweet = (bot, {since_id, seed, errorCount} = {}) => {
             } else {
                 console.lol(`Yay!! Got ${data.statuses.length} tweets!`)
                 const formattedTweets = [];
-                for (i = 0; i < data.statuses.length; i++) {
-                    console.log(data.statuses[i].id);
-                    if (IHOBUtils.shouldRetweet(data.statuses[i])) {
+                data.statuses.forEach((tweet) => {
+                    if (IHOBUtils.shouldRetweet(tweet)) {
                         formattedTweets.push({
-                            rt: IHOBUtils.format(data.statuses[i], {prefixMentions: true, reply: true}),
-                            source: data.statuses[i]
+                            rt: IHOBUtils.format(tweet, { prefixMentions: true, reply: true }),
+                            source: tweet
                         });
                     }
-                }
+                });
 
                 const requery = () => {
                     console.lol("searching again");
