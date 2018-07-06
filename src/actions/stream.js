@@ -21,7 +21,9 @@ const startStream = (bot, {trends}) => {
 
                 tweetStream = bot.stream('statuses/filter', {
                     follow: following,
-                    track: tracking
+                    track: tracking,
+                    filter_level: "medium",
+                    language: "en"
                 });
 
                 tweetStream.on('tweet', getRetweetHandler(bot));
